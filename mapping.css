@@ -1,0 +1,45 @@
+/* Map Styling */
+#map {
+    height: 500px; 
+    width: 100%;   
+    margin: 10px 0; 
+}
+
+.container h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+
+/* Center the paragraph and button */
+.container p {
+    font-size: 0.9em;
+    color: #000000;
+    text-align: center; /* Center the text */
+    display: flex; /* Use flexbox to align text and button */
+    justify-content: center; /* Horizontally center both text and button */
+    align-items: center; /* Vertically align text and button */
+    flex-wrap: wrap; /* Allow wrapping if the text and button don't fit on the same line */
+}
+
+.nav-buttons{
+    margin-top: 5px; /* Space between paragraph and button */
+
+}
+/* Smaller Inline Button Styling */
+.nav-button-inline {
+    padding: 5px 15px; 
+    background-color: #1abc9c;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 0.9em; 
+    margin-left: 15px; /* Space between text and button */
+    transition: background-color 0.3s ease;
+    display: inline-block; 
+}
+
+.nav-button-inline:hover {
+    background-color: #16a085;
+}
