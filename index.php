@@ -14,9 +14,8 @@
         <div class="navbar-container">
             <a href="#" class="logo">NLP Website</a>
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Project</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="/NLP/index.php">Home</a></li>
+                <li><a href="/NLP/aboutpj.php">About Project</a></li>
             </ul>
         </div>
     </nav>

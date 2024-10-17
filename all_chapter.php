@@ -8,6 +8,7 @@ $totalChapters = 18;
 // Define the next and previous chapter numbers
 $nextChapter = $currentChapter < $totalChapters ? $currentChapter + 1 : null;
 $previousChapter = $currentChapter > 1 ? $currentChapter - 1 : null;
+
 ?>
 
 <!DOCTYPE html>
@@ -27,11 +28,10 @@ $previousChapter = $currentChapter > 1 ? $currentChapter - 1 : null;
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="index.php" class="logo">NLP Website</a> <!-- Links back to the main index -->
+            <a href="index.php" class="logo">NLP Website</a>
             <ul class="nav-links">
                 <li><a href="/NLP/index.php">Home</a></li>
-                <li><a href="#">About Project</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="/NLP/aboutpj.php">About Project</a></li>
             </ul>
         </div>
     </nav>
@@ -60,27 +60,59 @@ $previousChapter = $currentChapter > 1 ? $currentChapter - 1 : null;
         </div>
     </footer>
 
-    <!-- Leaflet JavaScript (for OpenStreetMap) -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
     <script>
-        var map = L.map('map').setView([53.349805, -6.26031], 6); // Center on Dublin
+        var map = L.map('map').setView([53.349805, -6.26031], 9); // Center on Dublin
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+        // Function to convert decimal degrees to DMS format
+        function toDMS(degrees) {
+            const d = Math.floor(Math.abs(degrees));
+            const m = Math.floor((Math.abs(degrees) - d) * 60);
+            const s = ((Math.abs(degrees) - d - m / 60) * 3600).toFixed(1);
+            const direction = degrees >= 0 ? (degrees === d ? '' : (degrees > 0 ? 'N' : 'S')) : 'S';
+            return `${d}°${m}'${s}"${direction}`;
+        }
+
         // Fetch the locations based on the current chapter
-        fetch('fetch_locations.php?chapter=<?php echo $currentChapter; ?>')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(function(location) {
-                    L.marker([location.latitude, location.longitude])
-                        .addTo(map)
-                        .bindPopup(`<b>${location.gpe}</b><br>${location.part_of_text}`);
-                });
-            })
-            .catch(error => console.log('Error fetching location data:', error));
+fetch('fetch_locations.php?chapter=<?php echo $currentChapter; ?>')
+    .then(response => response.json())
+    .then(data => {
+        // Create a dictionary to store markers by GPE
+        const locationMap = {};
+
+        data.forEach(function(location) {
+            const gpe = location.gpe;
+            const lat = location.latitude;
+            const lon = location.longitude;
+            const partOfText = location.part_of_text;
+
+            if (locationMap[gpe]) {
+                locationMap[gpe].popupContent += `<br><br>${partOfText}`;
+            } else {
+                const formattedLatitude = toDMS(lat);
+                const formattedLongitude = toDMS(lon);
+
+                locationMap[gpe] = {
+                    lat: lat,
+                    lon: lon,
+                    popupContent: `<b>${gpe}</b><br><b>${formattedLatitude}${formattedLongitude}</b><br>${partOfText}`
+                };
+            }
+        });
+
+        Object.values(locationMap).forEach(function(loc) {
+            L.marker([loc.lat, loc.lon])
+                .addTo(map)
+                .bindPopup(loc.popupContent);
+        });
+    })
+    .catch(error => console.log('Error fetching location data:', error));
+
     </script>
 
 </body>

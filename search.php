@@ -1,42 +1,36 @@
 <?php
-// Database connection details
-$servername = "localhost";  // Change if different
-$username = "root";         // Change if different
-$password = "";             // Change if different
-$dbname = "nlp";            // Database name
+$servername = "localhost";  
+$username = "root";       
+$password = "";        
+$dbname = "nlp";        
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Get the search query from the form
 $searchQuery = isset($_GET['query']) ? $_GET['query'] : '';
 
-// Sanitize the search query to prevent SQL injection
 $searchQuery = $conn->real_escape_string($searchQuery);
 
-// Updated query to get total mentions and mentions by chapter
 $sql = "SELECT chapter, gpe, COUNT(DISTINCT part_of_text) AS mentions_count, 
                (SELECT COUNT(DISTINCT part_of_text) 
                 FROM place_name_spacy 
                 WHERE gpe LIKE '%$searchQuery%') AS total_mentions
         FROM place_name_spacy 
         WHERE gpe LIKE '%$searchQuery%' 
+        AND enabled = 1
         GROUP BY chapter, gpe
         ORDER BY chapter ASC";
 
 $result = $conn->query($sql);
 
-// Fetch total mentions (from the first row, since it's the same for all rows)
 $total_mentions = 0;
 if ($result->num_rows > 0) {
     $first_row = $result->fetch_assoc();
     $total_mentions = $first_row['total_mentions'];
-    $result->data_seek(0); // Reset result pointer back to the beginning
+    $result->data_seek(0); 
 }
 ?>
 
@@ -56,8 +50,7 @@ if ($result->num_rows > 0) {
             <a href="index.php" class="logo">NLP Website</a>
             <ul class="nav-links">
                 <li><a href="/NLP/index.php">Home</a></li>
-                <li><a href="#">About Project</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="/NLP/aboutpj.php">About Project</a></li>
             </ul>
         </div>
     </nav>

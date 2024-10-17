@@ -16,18 +16,18 @@
 .container p {
     font-size: 0.9em;
     color: #000000;
-    text-align: center; /* Center the text */
-    display: flex; /* Use flexbox to align text and button */
-    justify-content: center; /* Horizontally center both text and button */
-    align-items: center; /* Vertically align text and button */
-    flex-wrap: wrap; /* Allow wrapping if the text and button don't fit on the same line */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .nav-buttons{
-    margin-top: 5px; /* Space between paragraph and button */
+    margin-top: 5px;
 
 }
-/* Smaller Inline Button Styling */
+
 .nav-button-inline {
     padding: 5px 15px; 
     background-color: #1abc9c;
