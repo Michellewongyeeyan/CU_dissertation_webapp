@@ -30,8 +30,8 @@ $previousChapter = $currentChapter > 1 ? $currentChapter - 1 : null;
         <div class="navbar-container">
             <a href="index.php" class="logo">NLP Website</a>
             <ul class="nav-links">
-                <li><a href="/NLP/index.php">Home</a></li>
-                <li><a href="/NLP/aboutpj.php">About Project</a></li>
+                <li><a href="/Code_for_webapp/index.php">Home</a></li>
+                <li><a href="/Code_for_webapp/aboutpj.php">About Project</a></li>
             </ul>
         </div>
     </nav>
